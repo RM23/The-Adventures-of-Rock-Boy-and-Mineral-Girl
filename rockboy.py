@@ -4,11 +4,11 @@ class RockBoy():
     """class for rock boy, the star of the show!"""
 
     #constants for character state
-    def __init__(self,screen):
+    def __init__(self,screen,fileName):
         self.screen = screen
 
         #load rock image and get its rect
-        self.image = game.image.load('RockBoy.png')
+        self.image = game.image.load(fileName)
         self.rect = self.image.get_rect()
         self.screenRect = screen.get_rect()
 

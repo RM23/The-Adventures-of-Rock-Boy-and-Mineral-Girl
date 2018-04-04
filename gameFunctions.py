@@ -3,18 +3,18 @@
 import sys
 import pygame as game
 
-def checkEvents(char):
+def checkEvents(char,stage):
     """Responds to keyboard and mouse events"""
     for event in game.event.get():
         if event.type == game.QUIT:
             game.quit()
             sys.exit()
         elif event.type == game.KEYDOWN:
-            checkKeyDown(event,char)
+            checkKeyDown(event,char,stage)
         elif event.type == game.KEYUP:
-            checkKeyUp(event,char)
+            checkKeyUp(event,char,stage)
                     
-def checkKeyDown(event, char):
+def checkKeyDown(event, char,stage):
     """Handles events that occur when player presses keys down"""
     if event.key == game.K_RIGHT:
         #move character right
@@ -36,7 +36,7 @@ def checkKeyDown(event, char):
         if char.movingDown:
             char.movingDown = False
                         
-def checkKeyUp(event, char):
+def checkKeyUp(event, char,stage):
     """Handles events that occur when player releases keys"""
     if event.key == game.K_RIGHT:
         char.movingRight = False
@@ -47,7 +47,7 @@ def checkKeyUp(event, char):
     elif event.key == game.K_UP:
         char.movingUp = False
                     
-def updateScreen(settings, screen, character):
+def updateScreen(settings, screen, character,stage):
     """Updates the images on the screen and flips the new screen"""
     #fill screen with background color
     screen.fill(settings.bgColor)
