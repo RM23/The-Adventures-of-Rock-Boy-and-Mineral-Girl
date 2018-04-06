@@ -3,11 +3,8 @@ import spidev
 import time as t
 
 
-
-lightAvg = []
-lightCount = 0
 lightPrompt = True
-prvAvg = 1
+readings = []
 
 def bitstring(n):
     s = bin(n)[2:]
@@ -27,25 +24,15 @@ def read(adc_channel):
     return int(reply,2) / 2**10
 
 while True:
-    print(read(0))
-    if len(lightAvg) == 10:
-        del lightAvg[0]
-    lightAvg.append(read(0))
-    total = 0
-    for i in lightAvg:
-        total += i
-    avg = total/len(lightAvg)
-    #print(prvAvg)
-    if avg > prvAvg:
-        #print("Collecting Data")
-        lightCount += 1
+    if len(readings) > 2:
+        del readings[0]
+    readings.append(read(0))
+    if readings.count(readings[0]) == 2:
+        print("Collected Data")
+        break
     else:
-        #print("Waiting")
+        print("Waiting")
         pass
     
-    #if lightCount > 5:
-        #print("Success")
-        #break
-    prvAvg = avg
-    t.sleep(.1)
+    t.sleep(.5)
     
