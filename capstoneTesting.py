@@ -10,15 +10,17 @@ def runGame():
     #initialize window and such
     settings = Settings()
     game.init()
+    game.font.init()
     screen = game.display.set_mode((settings.screenWidth,settings.screenHeight))
     game.display.set_caption(settings.title)
-
+    
     character = boy(screen)
 
     #main loop for game
     while True:
         gf.checkEvents(character)
-        character.updatePos()
+        if character.stage == "OVERWORLD":
+            character.updatePos()
         gf.updateScreen(settings, screen, character)
                 
 runGame()

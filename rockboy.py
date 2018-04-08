@@ -7,14 +7,18 @@ class RockBoy():
     def __init__(self,screen):
         self.screen = screen
 
-        #load rock image and get its rect
-        self.image = game.image.load('RockBoy.png')
-        self.rect = self.image.get_rect()
-        self.screenRect = screen.get_rect()
+        self.stage = "CHARACTER_SELECT"
 
-        #start rock boy at bottom left corner
+        #load rock image and get its rect
+        self.image = game.image.load("RockBoy.png")
+        self.rect = self.image.get_rect()
+        self.screenRect = self.screen.get_rect()
+
         self.rect.left = self.screenRect.left
         self.rect.bottom = self.screenRect.bottom
+        
+        #start rock boy at bottom left corner
+        
 
         #flags for continuous movement
         self.movingRight = False
@@ -37,7 +41,13 @@ class RockBoy():
             self.rect.centery += self.speed
         elif self.movingUp and self.rect.top > self.screenRect.top:
             self.rect.centery -= self.speed
-            
+    def setImage(self,fileName):
+        self.image = game.image.load(fileName)
+        self.rect = self.image.get_rect()
+        self.screenRect = self.screen.get_rect()
+
+        self.rect.left = self.screenRect.left
+        self.rect.bottom = self.screenRect.bottom
     def blit(self):
         """Draw rock at current location"""
         self.screen.blit(self.image,self.rect)
