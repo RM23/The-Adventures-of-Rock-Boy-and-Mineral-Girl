@@ -40,10 +40,10 @@ def checkKeyDown(event,char):
     elif char.stage == "CHARACTER_SELECT":
         if event.key == game.K_r:
             #select rockboy
-            char.setImage("RockBoy.png")
+            char.setImage("RockBoy.png", "RockSelect.png")
         elif event.key == game.K_m:
             #select mineral girl
-            char.setImage("MineralGirl.png")
+            char.setImage("MineralGirl.png", "MineralSelect.png")
         elif event.key == game.K_RETURN:
             #advance to overworld
             char.stage = "OVERWORLD"
@@ -60,13 +60,23 @@ def checkKeyUp(event, char):
         elif event.key == game.K_UP:
             char.movingUp = False
                         
-def updateScreen(settings,screen,character):
+def updateScreen(settings,screen,character,paths,walls):
     """Updates the images on the screen and flips the new screen"""
     #fill screen with background color
     screen.fill(settings.bgColor)
 
     if character.stage == "OVERWORLD":
+        #draw path tiles
+        for i in paths:
+            i.blit()
+
+        #draw wall tiles
+        for i in walls:
+            i.blit()
+
+        #draw character
         character.blit()
+
     elif character.stage == "CHARACTER_SELECT":
         selectFont = game.font.SysFont('Comic Sans MS', 48)
         selectText = selectFont.render('CHARACTER SELECT', False, (255,255,255))
@@ -75,7 +85,7 @@ def updateScreen(settings,screen,character):
         screen.blit(selectText,(screen.get_rect().centerx,screen.get_rect().centery))
         screen.blit(rockText,(screen.get_rect().centerx,screen.get_rect().centery + 75))
         screen.blit(mineralText,(screen.get_rect().centerx,screen.get_rect().centery + 150))
-        character.blit()
+        character.selectBlit()
         
     #actually display drawn window
     game.display.flip()
