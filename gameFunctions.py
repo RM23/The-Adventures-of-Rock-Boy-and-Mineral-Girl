@@ -60,7 +60,7 @@ def checkKeyUp(event, char):
         elif event.key == game.K_UP:
             char.movingUp = False
                         
-def updateScreen(settings,screen,character,paths,walls):
+def updateScreen(settings,screen,character,paths,walls, rocks):
     """Updates the images on the screen and flips the new screen"""
     #fill screen with background color
     screen.fill(settings.bgColor)
@@ -72,6 +72,10 @@ def updateScreen(settings,screen,character,paths,walls):
 
         #draw wall tiles
         for i in walls:
+            i.blit()
+
+        #draw rock tiles
+        for i in rocks:
             i.blit()
 
         #draw character
@@ -86,6 +90,13 @@ def updateScreen(settings,screen,character,paths,walls):
         screen.blit(rockText,(screen.get_rect().centerx,screen.get_rect().centery + 75))
         screen.blit(mineralText,(screen.get_rect().centerx,screen.get_rect().centery + 150))
         character.selectBlit()
+
+    elif character.stage == "BATTLE":
+        screen.fill(settings.battleBg)
+        battleFont = game.font.SysFont('Comic Sans MS', 32)
+        battleText = battleFont.render('IDENTIFY THAT MINERAL!', False, (255,255,255))
+        screen.blit(battleText, (screen.get_rect().left,screen.get_rect().top))
+        
         
     #actually display drawn window
     game.display.flip()

@@ -34,19 +34,28 @@ class RockBoy():
         self.speed = 1
 
     def checkCollision(self,tiles):
+        colliding = False
         for i in tiles:
             if self.rect.right > i.rect.left and self.rect.right < i.rect.right and self.rect.centery >= i.rect.centery - 16 and self.rect.centery <= i.rect.centery + 16:
                 movingRight = False
                 self.rect.right = i.rect.left
+                colliding = True
             elif self.rect.left > i.rect.left and self.rect.left < i.rect.right and self.rect.centery >= i.rect.centery - 16 and self.rect.centery <= i.rect.centery + 16:
                 movingLeft = False
                 self.rect.left = i.rect.right
+                colliding = True
             elif self.rect.bottom > i.rect.top and self.rect.bottom < i.rect.bottom and self.rect.centerx >= i.rect.centerx - 16 and self.rect.centerx <= i.rect.centerx + 16:
                 movingDown = False
                 self.rect.bottom = i.rect.top
+                colliding = True
             elif self.rect.top > i.rect.top and self.rect.top < i.rect.bottom and self.rect.centerx >= i.rect.centerx - 16 and self.rect.centerx <= i.rect.centerx + 16:
                 movingUp = False
                 self.rect.top = i.rect.bottom
+                colliding = True
+        if colliding == True:
+            return True
+        else:
+            return False
         
     def updatePos(self):
         """Update character's position based on movement flag"""
