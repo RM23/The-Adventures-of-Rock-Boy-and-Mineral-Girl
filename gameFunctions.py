@@ -47,6 +47,15 @@ def checkKeyDown(event,char):
         elif event.key == game.K_RETURN:
             #advance to overworld
             char.stage = "OVERWORLD"
+    elif char.stage == "BATTLE":
+        if event.key == game.K_r:
+            #return to overworld
+            char.stage = "OVERWORLD"
+            char.rect.left = char.rect.left+64
+            char.movingRight = False
+            char.movingLeft = False
+            char.movingUp = False
+            char.movingDown = False
                         
 def checkKeyUp(event, char):
     """Handles events that occur when player releases keys"""
@@ -94,7 +103,10 @@ def updateScreen(settings,screen,character,paths,walls, rocks):
     elif character.stage == "BATTLE":
         screen.fill(settings.battleBg)
         battleFont = game.font.SysFont('Comic Sans MS', 32)
+        menuFont = game.font.SysFont('Comic Sans MS', 24)
         battleText = battleFont.render('IDENTIFY THAT MINERAL!', False, (255,255,255))
+        menuText = menuFont.render('Red = RUN!; Yellow = Taunt; Green = Acid Test; Blue = Streak/Scratch', False, (255,255,255))
+        screen.blit(menuText, (screen.get_rect().left,screen.get_rect().top+32))
         screen.blit(battleText, (screen.get_rect().left,screen.get_rect().top))
         
         
