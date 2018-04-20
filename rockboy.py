@@ -21,6 +21,11 @@ class RockBoy():
         self.selectRect = self.selectImage.get_rect()
         self.selectRect.left = self.screenRect.centerx
         self.selectRect.bottom = self.screenRect.centery
+
+        #set hit points and exp
+        self.hp = 10
+        self.exp = 0
+        self.lvl = 1
         
         #flags for continuous movement
         self.movingRight = False
@@ -56,6 +61,12 @@ class RockBoy():
             return True
         else:
             return False
+
+    def stopMovement(self):
+        self.movingLeft = False
+        self.movingRight = False
+        self.movingUp = False
+        self.movingDown = False
         
     def updatePos(self):
         """Update character's position based on movement flag"""

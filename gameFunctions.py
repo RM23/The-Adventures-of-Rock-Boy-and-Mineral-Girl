@@ -2,6 +2,7 @@
 
 import sys
 import pygame as game
+from fonts import Fonts
 
 def checkEvents(char):
     """Responds to keyboard and mouse events"""
@@ -37,6 +38,8 @@ def checkKeyDown(event,char):
             char.movingUp = True
             if char.movingDown:
                 char.movingDown = False
+        elif event.key == game.K_RETURN:
+            char.stage = "PAUSE"
     elif char.stage == "CHARACTER_SELECT":
         if event.key == game.K_r:
             #select rockboy
@@ -52,10 +55,11 @@ def checkKeyDown(event,char):
             #return to overworld
             char.stage = "OVERWORLD"
             char.rect.left = char.rect.left+64
-            char.movingRight = False
-            char.movingLeft = False
-            char.movingUp = False
-            char.movingDown = False
+            char.stopMovement()
+    elif char.stage == "PAUSE":
+        if event.key == game.K_RETURN:
+            char.stage = "OVERWORLD"
+            char.stopMovement()
                         
 def checkKeyUp(event, char):
     """Handles events that occur when player releases keys"""
@@ -71,6 +75,7 @@ def checkKeyUp(event, char):
                         
 def updateScreen(settings,screen,character,paths,walls, rocks):
     """Updates the images on the screen and flips the new screen"""
+    font = Fonts(character)
     #fill screen with background color
     screen.fill(settings.bgColor)
 
@@ -91,23 +96,23 @@ def updateScreen(settings,screen,character,paths,walls, rocks):
         character.blit()
 
     elif character.stage == "CHARACTER_SELECT":
-        selectFont = game.font.SysFont('Comic Sans MS', 48)
-        selectText = selectFont.render('CHARACTER SELECT', False, (255,255,255))
-        rockText = selectFont.render('[R]ock Boy', False, (255,255,255))
-        mineralText = selectFont.render('[M]ineral Girl', False, (255,255,255))
-        screen.blit(selectText,(screen.get_rect().centerx,screen.get_rect().centery))
-        screen.blit(rockText,(screen.get_rect().centerx,screen.get_rect().centery + 75))
-        screen.blit(mineralText,(screen.get_rect().centerx,screen.get_rect().centery + 150))
+        screen.blit(font.selectText,(screen.get_rect().centerx,screen.get_rect().centery))
+        screen.blit(font.rockText,(screen.get_rect().centerx,screen.get_rect().centery + 75))
+        screen.blit(font.mineralText,(screen.get_rect().centerx,screen.get_rect().centery + 150))
         character.selectBlit()
 
     elif character.stage == "BATTLE":
         screen.fill(settings.battleBg)
-        battleFont = game.font.SysFont('Comic Sans MS', 32)
-        menuFont = game.font.SysFont('Comic Sans MS', 24)
-        battleText = battleFont.render('IDENTIFY THAT MINERAL!', False, (255,255,255))
-        menuText = menuFont.render('Red = RUN!; Yellow = Taunt; Green = Acid Test; Blue = Streak/Scratch', False, (255,255,255))
-        screen.blit(menuText, (screen.get_rect().left,screen.get_rect().top+32))
-        screen.blit(battleText, (screen.get_rect().left,screen.get_rect().top))
+        screen.blit(font.menuText, (screen.get_rect().left,screen.get_rect().top+32))
+        screen.blit(font.battleText, (screen.get_rect().left,screen.get_rect().top))
+
+    elif character.stage == "PAUSE":
+       
+        screen.blit(font.pauseText, (screen.get_rect().left,screen.get_rect().top))
+        screen.blit(font.statTextHP, (screen.get_rect().left,screen.get_rect().top + 32))
+        screen.blit(font.statTextLVL, (screen.get_rect().left,screen.get_rect().top + 56))
+        screen.blit(font.statTextEXP, (screen.get_rect().left,screen.get_rect().top + 80))
+
         
         
     #actually display drawn window
