@@ -13,7 +13,7 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
-            self.image = 'Citrine.png'
+            self.image = 'Quartz.png'
             
         elif (ID == 2):
             self.name = 'copper'
