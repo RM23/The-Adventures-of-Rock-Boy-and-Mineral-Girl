@@ -5,6 +5,7 @@ import pygame as game
 from settings import Settings
 from rockboy import RockBoy as boy
 from rock import Rock
+from fonts import Fonts
 from tiles import Tile
 import gameFunctions as gf
 
@@ -18,6 +19,8 @@ def runGame():
     game.display.set_caption(settings.title)
     
     character = boy(screen)
+
+    font = Fonts(character)
 
     #create a path
     pathList = []
@@ -42,19 +45,21 @@ def runGame():
         
     #main loop for game
     while True:
-        gf.checkEvents(character)
         if character.stage == "OVERWORLD":
             character.checkCollision(wallList)
             if character.checkCollision(rockList) == True:
                 mineral = randint(1,10)
                 enemy = Rock(mineral,screen)
                 character.stage = "BATTLE"
+                character.setBattleImage("Battle.png")
             character.updatePos()
         if character.stage == "BATTLE":
-            gf.updateScreen(settings, screen, character, pathList, wallList, rockList,enemy)
+            gf.checkEvents(character,font,enemy)
+            gf.updateScreen(settings, screen, character, pathList, wallList, rockList, font, enemy)
         else:
-            gf.updateScreen(settings, screen, character, pathList, wallList, rockList)
-        print(character.stage)
+            gf.checkEvents(character,font)
+            gf.updateScreen(settings, screen, character, pathList, wallList, rockList, font)
+        print(character.hp)
                 
 runGame()
  

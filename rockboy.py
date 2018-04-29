@@ -5,10 +5,14 @@ class RockBoy():
 
     #constants for character state
     def __init__(self,screen):
+        #identify as whom the player is playing
+        self.name = "Rock"
+        
         self.screen = screen
         self.screenRect = self.screen.get_rect()
 
         self.stage = "CHARACTER_SELECT"
+        self.battleStage = "MENU"
 
         #load rock image and get its rect
         self.image = game.image.load("RockBoy.png")
@@ -21,6 +25,12 @@ class RockBoy():
         self.selectRect = self.selectImage.get_rect()
         self.selectRect.left = self.screenRect.centerx
         self.selectRect.bottom = self.screenRect.centery
+
+        #and the same for the battles
+        self.battleImage = game.image.load("RockBattle.png")
+        self.battleRect = self.battleImage.get_rect()
+        self.battleRect.left = self.screenRect.left
+        self.battleRect.bottom = self.screenRect.bottom
 
         #set hit points and exp
         self.hp = 10
@@ -89,6 +99,9 @@ class RockBoy():
         self.selectRect = self.selectImage.get_rect()
         self.selectRect.left = self.screenRect.centerx
         self.selectRect.bottom = self.screenRect.centery
+
+    def setBattleImage(self,fileName):
+        self.battleImage = game.image.load(self.name+fileName)
         
     def blit(self):
         """Draw rock at current location"""
@@ -97,3 +110,7 @@ class RockBoy():
     def selectBlit(self):
         """Blit used for the select screen only"""
         self.screen.blit(self.selectImage,self.selectRect)
+
+    def battleBlit(self):
+        """Blit used during battles"""
+        self.screen.blit(self.battleImage,self.battleRect)

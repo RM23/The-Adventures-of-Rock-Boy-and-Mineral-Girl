@@ -3,19 +3,20 @@
 import sys
 import pygame as game
 from fonts import Fonts
+from random import randint
 
-def checkEvents(char):
+def checkEvents(char,font,enemy=0):
     """Responds to keyboard and mouse events"""
     for event in game.event.get():
         if event.type == game.QUIT:
             game.quit()
             sys.exit()
         elif event.type == game.KEYDOWN:
-            checkKeyDown(event,char)
+            checkKeyDown(event,char,font,enemy)
         elif event.type == game.KEYUP:
-            checkKeyUp(event,char)
+            checkKeyUp(event,char,font,enemy)
                     
-def checkKeyDown(event,char):
+def checkKeyDown(event,char,font,enemy):
     """Handles events that occur when player presses keys down"""
     if char.stage == "OVERWORLD":
         if event.key == game.K_RIGHT:
@@ -43,25 +44,66 @@ def checkKeyDown(event,char):
     elif char.stage == "CHARACTER_SELECT":
         if event.key == game.K_r:
             #select rockboy
+            char.name = "Rock"
             char.setImage("RockBoy.png", "RockSelect.png")
         elif event.key == game.K_m:
             #select mineral girl
+            char.name = "Mineral"
             char.setImage("MineralGirl.png", "MineralSelect.png")
         elif event.key == game.K_RETURN:
             #advance to overworld
             char.stage = "OVERWORLD"
     elif char.stage == "BATTLE":
-        if event.key == game.K_r:
-            #return to overworld
-            char.stage = "OVERWORLD"
-            char.rect.left = char.rect.left+64
-            char.stopMovement()
+        if char.battleStage == "MENU":
+            if event.key == game.K_r:
+                #return to overworld
+                char.stage = "OVERWORLD"
+                char.battleStage = "MENU"
+                char.rect.left = char.rect.left+64
+                char.stopMovement()
+            elif event.key == game.K_y:
+                #taunt
+                char.battleStage = "PLAYER_ACTION"
+                char.setBattleImage("BattleTaunt.png")
+                font.menuText = font.menuFont.render('You started dancing to taunt the enemy!',False,(255,255,255))
+        elif char.battleStage == "PLAYER_ACTION":
+            if event.key == game.K_RETURN:
+                char.battleStage = "ENEMY_ACTION"
+                damage = randint(0,int(enemy.hardness))
+                if damage == 0:
+                    char.setBattleImage("BattleWin.png")
+                    font.menuText = font.menuFont.render('The mystery mineral attacked but missed! Whew!',False, (255,255,255))
+                else:
+                    char.setBattleImage("BattleHurt.png")
+                    font.menuText = font.menuFont.render('The mystery mineral attacked! You took ' + str(damage) + ' damage!',False,(255,255,255))
+                    char.hp -= damage
+                    if char.hp < 0:
+                        char.hp = 0
+                    font.statTextHP = font.statFont.render('HP: ' + str(char.hp), False, (255,255,255))
+        elif char.battleStage == "ENEMY_ACTION":
+            if event.key == game.K_RETURN:
+                if char.hp == 0:
+                    char.battleStage = "LOSE"
+                    font.menuText = font.menuFont.render("Oh no! You're done for! Press enter to return to main menu.",False,(255,255,255))
+                else:
+                    char.battleStage = "MENU"
+                    char.setBattleImage("Battle.png")
+                    font.menuText = font.menuFont.render('Red = RUN!; Yellow = Taunt; Green = Acid Test; Blue = Streak/Scratch', False, (255,255,255))
+        elif char.battleStage == "LOSE":
+            if event.key == game.K_RETURN:
+                char.stage = "CHARACTER_SELECT"
+                char.battleStage = "MENU"
+                char.stopMovement()
+                char.hp = 10
+                font.statTextHP = font.statFont.render('HP: ' + str(char.hp), False, (255,255,255))
+                font.menuText = font.menuFont.render('Red = RUN!; Yellow = Taunt; Green = Acid Test; Blue = Streak/Scratch', False, (255,255,255))
+            
     elif char.stage == "PAUSE":
         if event.key == game.K_RETURN:
             char.stage = "OVERWORLD"
             char.stopMovement()
                         
-def checkKeyUp(event, char):
+def checkKeyUp(event,char,font,enemy):
     """Handles events that occur when player releases keys"""
     if char.stage == "OVERWORLD":
         if event.key == game.K_RIGHT:
@@ -73,9 +115,9 @@ def checkKeyUp(event, char):
         elif event.key == game.K_UP:
             char.movingUp = False
                         
-def updateScreen(settings, screen, character, paths, walls, rocks, enemy = 0):
+def updateScreen(settings, screen, character, paths, walls, rocks, font, enemy = 0):
     """Updates the images on the screen and flips the new screen"""
-    font = Fonts(character)
+    
     #fill screen with background color
     screen.fill(settings.bgColor)
 
@@ -105,9 +147,11 @@ def updateScreen(settings, screen, character, paths, walls, rocks, enemy = 0):
         screen.fill(settings.battleBg)
         screen.blit(font.menuText, (screen.get_rect().left,screen.get_rect().top+32))
         screen.blit(font.battleText, (screen.get_rect().left,screen.get_rect().top))
+        screen.blit(font.statTextHP, (screen.get_rect().left,screen.get_rect().bottom - 160))
+        character.battleBlit()
         enemy.blit()
+        
     elif character.stage == "PAUSE":
-       
         screen.blit(font.pauseText, (screen.get_rect().left,screen.get_rect().top))
         screen.blit(font.statTextHP, (screen.get_rect().left,screen.get_rect().top + 32))
         screen.blit(font.statTextLVL, (screen.get_rect().left,screen.get_rect().top + 56))
