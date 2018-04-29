@@ -4,6 +4,7 @@ from random import randint
 import pygame as game
 from settings import Settings
 from rockboy import RockBoy as boy
+from rock import Rock
 from tiles import Tile
 import gameFunctions as gf
 
@@ -44,11 +45,15 @@ def runGame():
         gf.checkEvents(character)
         if character.stage == "OVERWORLD":
             character.checkCollision(wallList)
-            #character.checkCollision(rockList)
             if character.checkCollision(rockList) == True:
+                mineral = randint(1,10)
+                enemy = Rock(mineral,screen)
                 character.stage = "BATTLE"
             character.updatePos()
-        gf.updateScreen(settings, screen, character, pathList, wallList, rockList)
+        if character.stage == "BATTLE":
+            gf.updateScreen(settings, screen, character, pathList, wallList, rockList,enemy)
+        else:
+            gf.updateScreen(settings, screen, character, pathList, wallList, rockList)
         print(character.stage)
                 
 runGame()

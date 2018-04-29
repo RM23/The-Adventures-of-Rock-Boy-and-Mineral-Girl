@@ -1,7 +1,7 @@
 #file to hold class for rocks that need to be identified
-
+import pygame as game
 class Rock():
-    def __init__(self,ID):
+    def __init__(self,ID,screen):
         if (ID == 1):
             self.name = 'citrine'
             self.hardness = 7
@@ -13,7 +13,7 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
-            self.image = 'Quartz.png'
+            self.imageFile = 'Quartz.png'
             
         elif (ID == 2):
             self.name = 'copper'
@@ -26,7 +26,7 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
-            self.image = 'Copper.png'
+            self.imageFile = 'Copper.png'
             
         elif (ID == 3):
             self.name = 'ulexite'
@@ -39,7 +39,7 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
-            self.image = 'Borate.png'
+            self.imageFile = 'Borate.png'
             
         elif (ID == 4):
             self.name = 'calcite'
@@ -52,7 +52,7 @@ class Rock():
             self.magnetic = 0
             self.acid = 1
 
-            self.image = 'Carbonate.png'
+            self.imageFile = 'Carbonate.png'
             
         elif (ID == 5):
             self.name = 'dolomite'
@@ -65,7 +65,7 @@ class Rock():
             self.magnetic = 0
             self.acid = 2
 
-            self.image = 'Carbonate.png'
+            self.imageFile = 'Carbonate.png'
             
         elif (ID == 6):
             self.name = 'halite'
@@ -78,7 +78,7 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
-            self.image = 'Halide.png'
+            self.imageFile = 'Halide.png'
             
         elif (ID == 7):
             self.name = 'goethite'
@@ -91,7 +91,7 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
-            self.image = 'IronOxide.png'
+            self.imageFile = 'IronOxide.png'
             
         elif (ID == 8):
             self.name = 'magnetite'
@@ -104,7 +104,7 @@ class Rock():
             self.magnetic = 1
             self.acid = 0
 
-            self.image = 'IronOxide.png'
+            self.imageFile = 'IronOxide.png'
             
         elif (ID == 9):
             self.name = 'kaolinite'
@@ -117,7 +117,7 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
-            self.image = 'Phyllosilicate.png'
+            self.imageFile = 'Phyllosilicate.png'
 
         elif (ID == 10):
             self.name = 'talc'
@@ -130,5 +130,14 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
-            self.image = 'Phyllosilicate.png'
+            self.imageFile = 'Phyllosilicate.png'
+
+        self.image = game.image.load(self.imageFile)
+        self.rect = self.image.get_rect()
+        self.screen = screen
+        self.screenRect = self.screen.get_rect()
         
+    def blit(self):
+        self.rect.centerx = self.screenRect.centerx
+        self.rect.centery = self.screenRect.centery
+        self.screen.blit(self.image,self.rect)

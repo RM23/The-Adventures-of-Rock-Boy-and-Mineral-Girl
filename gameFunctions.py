@@ -73,7 +73,7 @@ def checkKeyUp(event, char):
         elif event.key == game.K_UP:
             char.movingUp = False
                         
-def updateScreen(settings,screen,character,paths,walls, rocks):
+def updateScreen(settings, screen, character, paths, walls, rocks, enemy = 0):
     """Updates the images on the screen and flips the new screen"""
     font = Fonts(character)
     #fill screen with background color
@@ -105,7 +105,7 @@ def updateScreen(settings,screen,character,paths,walls, rocks):
         screen.fill(settings.battleBg)
         screen.blit(font.menuText, (screen.get_rect().left,screen.get_rect().top+32))
         screen.blit(font.battleText, (screen.get_rect().left,screen.get_rect().top))
-
+        enemy.blit()
     elif character.stage == "PAUSE":
        
         screen.blit(font.pauseText, (screen.get_rect().left,screen.get_rect().top))
