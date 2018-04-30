@@ -42,19 +42,25 @@ def runGame():
         randY= randint(0,800-32)
         rock = Tile('OverworldRock.png',randX,randY,screen,1)
         rockList.append(rock)
+
+    usedMinerals = []
+    mineral = -1
         
     #main loop for game
     while True:
         if character.stage == "OVERWORLD":
             character.checkCollision(wallList)
             if character.checkCollision(rockList) == True:
-                mineral = randint(1,10)
+                while True:
+                    mineral = randint(1,10)
+                    if mineral not in usedMinerals:
+                        break
                 enemy = Rock(mineral,screen)
                 character.stage = "BATTLE"
                 character.setBattleImage("Battle.png")
             character.updatePos()
         if character.stage == "BATTLE":
-            gf.checkEvents(character,font,enemy)
+            gf.checkEvents(character,font,enemy,rockList,mineral,usedMinerals)
             gf.updateScreen(settings, screen, character, pathList, wallList, rockList, font, enemy)
         else:
             gf.checkEvents(character,font)

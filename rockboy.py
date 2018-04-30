@@ -88,6 +88,22 @@ class RockBoy():
             self.rect.centery += self.speed
         elif self.movingUp and self.rect.top > self.screenRect.top:
             self.rect.centery -= self.speed
+
+    def removeRock(self,rockList):
+        for i in rockList:
+            colliding = False
+            if self.rect.right >= i.rect.left and self.rect.right <= i.rect.right and self.rect.centery >= i.rect.centery - 16 and self.rect.centery <= i.rect.centery + 16:
+                colliding = True
+            elif self.rect.left >= i.rect.left and self.rect.left <= i.rect.right and self.rect.centery >= i.rect.centery - 16 and self.rect.centery <= i.rect.centery + 16:
+                colliding = True
+            elif self.rect.bottom >= i.rect.top and self.rect.bottom <= i.rect.bottom and self.rect.centerx >= i.rect.centerx - 16 and self.rect.centerx <= i.rect.centerx + 16:
+                colliding = True
+            elif self.rect.top >= i.rect.top and self.rect.top <= i.rect.bottom and self.rect.centerx >= i.rect.centerx - 16 and self.rect.centerx <= i.rect.centerx + 16:
+                colliding = True
+            if colliding == True:
+                i.rect.left = 3000
+                i.rect.top = 3000
+                break
             
     def setImage(self,fileName,selectName):
         self.image = game.image.load(fileName)
