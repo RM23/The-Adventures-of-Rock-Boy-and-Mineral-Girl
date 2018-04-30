@@ -65,7 +65,7 @@ def runGame():
         else:
             gf.checkEvents(character,font)
             gf.updateScreen(settings, screen, character, pathList, wallList, rockList, font)
-        print(character.hp)
+        #print(character.hp)
                 
 runGame()
  

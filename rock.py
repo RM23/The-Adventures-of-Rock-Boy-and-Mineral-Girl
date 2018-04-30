@@ -6,8 +6,8 @@ class Rock():
             self.name = 'citrine'
             self.hardness = 7
             self.streak = 'white'
-            self.opacitry = 'translucent'
-            self.cleavage = 'none'
+            self.opacity = 'translucent'
+            self.cleavage = 'no'
             self.fracture = 'conchoidal'
             self.tenacity = 'brittle'
             self.magnetic = 0
@@ -19,8 +19,8 @@ class Rock():
             self.name = 'copper'
             self.hardness = 3
             self.streak = 'red'
-            self.opacitry = 'opaque'
-            self.cleavage = 'none'
+            self.opacity = 'opaque'
+            self.cleavage = 'no'
             self.fracture = 'hackly'
             self.tenacity = 'ductile'
             self.magnetic = 0
@@ -32,7 +32,7 @@ class Rock():
             self.name = 'ulexite'
             self.hardness = 2.5
             self.streak = 'white'
-            self.opacitry = 'translucent'
+            self.opacity = 'translucent'
             self.cleavage = 'prismatic'
             self.fracture = 'uneven'
             self.tenacity = 'brittle'
@@ -45,7 +45,7 @@ class Rock():
             self.name = 'calcite'
             self.hardness = 3
             self.streak = 'white'
-            self.opacitry = 'translucent'
+            self.opacity = 'translucent'
             self.cleavage = 'rhombohedral'
             self.fracture = 'conchoidal'
             self.tenacity = 'brittle'
@@ -58,7 +58,7 @@ class Rock():
             self.name = 'dolomite'
             self.hardness = 4
             self.streak = 'white'
-            self.opacitry = 'opaque'
+            self.opacity = 'opaque'
             self.cleavage = 'rhombohedral'
             self.fracture = 'conchoidal'
             self.tenacity = 'brittle'
@@ -71,7 +71,7 @@ class Rock():
             self.name = 'halite'
             self.hardness = 2.5
             self.streak = 'white'
-            self.opacitry = 'translucent'
+            self.opacity = 'translucent'
             self.cleavage = 'cubic'
             self.fracture = 'conchoidal'
             self.tenacity = 'brittle'
@@ -84,8 +84,8 @@ class Rock():
             self.name = 'goethite'
             self.hardness = 5
             self.streak = 'yellow'
-            self.opacitry = 'opaque'
-            self.cleavage = 'none'
+            self.opacity = 'opaque'
+            self.cleavage = 'no'
             self.fracture = 'splintery'
             self.tenacity = 'brittle'
             self.magnetic = 0
@@ -97,8 +97,8 @@ class Rock():
             self.name = 'magnetite'
             self.hardness = 6
             self.streak = 'black'
-            self.opacitry = 'opaque'
-            self.cleavage = 'none'
+            self.opacity = 'opaque'
+            self.cleavage = 'no'
             self.fracture = 'uneven'
             self.tenacity = 'brittle'
             self.magnetic = 1
@@ -110,7 +110,7 @@ class Rock():
             self.name = 'kaolinite'
             self.hardness = 2
             self.streak = 'white'
-            self.opacitry = 'opaque'
+            self.opacity = 'opaque'
             self.cleavage = 'basal'
             self.fracture = 'earthy'
             self.tenacity = 'sectile'
@@ -123,7 +123,7 @@ class Rock():
             self.name = 'talc'
             self.hardness = 1
             self.streak = 'white'
-            self.opacitry = 'opaque'
+            self.opacity = 'opaque'
             self.cleavage = 'basal'
             self.fracture = 'uneven'
             self.tenacity = 'sectile'

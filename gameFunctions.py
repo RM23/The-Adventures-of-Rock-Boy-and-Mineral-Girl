@@ -68,7 +68,38 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList):
                 font.menuText = font.menuFont.render('You started dancing to taunt the enemy!',False,(255,255,255))
             elif event.key == game.K_i:
                 char.battleStage = "IDENTIFY"
+                char.setBattleImage("BattleInfo.png")
                 font.menuText = font.menuFont.render('Enter the name of the mineral into the shell!',False,(255,255,255))
+            elif event.key == game.K_g:
+                playerAction(char,font)
+                if enemy.acid == 0:
+                    font.menuText = font.menuFont.render('The mineral was not affected by the acid.',False,(255,255,255))
+                elif enemy.acid == 1:
+                    font.menuText = font.menuFont.render('The mineral effervesced strongly!',False,(255,255,255))
+                elif enemy.acid == 2:
+                    font.menuText = font.menuFont.render('The mineral effervesced weakly!',False,(255,255,255))
+            elif event.key == game.K_s:
+                playerAction(char,font,'The mineral produced a ' + enemy.streak + " streak!")
+            elif event.key == game.K_h:
+                playerAction(char,font)
+                if enemy.hardness >= 5.5:
+                    font.menuText = font.menuFont.render('The mineral left a scratch on the glass plate!',False,(255,255,255))
+                else:
+                    font.menuText = font.menuFont.render('The mineral could not scratch the glass plate!',False,(255,255,255))
+            elif event.key == game.K_o:
+                playerAction(char,font,'Shining a light revealed the mineral to be ' + enemy.opacity + '!')
+            elif event.key == game.K_c:
+                playerAction(char,font,'Tiny pieces of the mineral appear to have ' + enemy.cleavage + ' cleavage!')
+            elif event.key == game.K_f:
+                playerAction(char,font,'You smashed the mineral, revealing ' + enemy.fracture + ' fracture!')
+            elif event.key == game.K_t:
+                playerAction(char,font,'Bening the mineral, you felt a ' + enemy.tenacity + ' tenacity!')
+            elif event.key == game.K_m:
+                playerAction(char,font)
+                if enemy.magnetic == 0:
+                    font.menuText = font.menuFont.render('The mineral is not attracted to the magnet.',False,(255,255,255))
+                else:
+                    font.menuText = font.menuFont.render('The mineral is attracted to the magnet!',False,(255,255,255))
         elif char.battleStage == "PLAYER_ACTION":
             if event.key == game.K_RETURN:
                 char.battleStage = "ENEMY_ACTION"
@@ -107,17 +138,6 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList):
                 char.exp += 3*enemy.hardness
                 font.statTextEXP = font.statFont.render('EXP: ' + str(char.exp), False, (255,255,255))
                 font.menuText = font.menuFont.render("That's right! It's " + enemy.name + "! You gained " + str(3*enemy.hardness) + " exp!", False, (255,255,255))
-                """if char.exp >= char.lvl*10:
-                    if event.key == game.K_RETURN:
-                        char.exp = char.exp - (char.lvl*10)
-                        char.lvl = char.lvl+1
-                        char.hp = 10 + 2*(char.lvl-1)
-                        font.statTextLVL = font.statFont.render('LVL: ' + str(char.lvl), False, (255,255,255))
-                        font.statTextHP = font.statFont.render('HP: ' + str(char.hp), False, (255,255,255))
-                        font.statTextEXP = font.statFont.render('EXP: ' + str(char.exp), False, (255,255,255))
-                        font.menuText = font.menuFont.render("LEVEL UP!", False, (255,255,255))
-                        char.battleStage = "LEVEL_UP"
-                else:"""
                 char.battleStage = "WIN"
             else:
                 char.battleStage = "PLAYER_ACTION"
@@ -166,7 +186,12 @@ def checkKeyUp(event,char,font,enemy,rock,mineral,mineralList):
             char.movingDown = False
         elif event.key == game.K_UP:
             char.movingUp = False
-                        
+
+def playerAction(char,font,text="default"):
+    char.battleStage = "PLAYER_ACTION"
+    char.setBattleImage("BattleInfo.png")
+    font.menuText = font.menuFont.render(text,False,(255,255,255))
+    
 def updateScreen(settings, screen, character, paths, walls, rocks, font, enemy = 0):
     """Updates the images on the screen and flips the new screen"""
     
