@@ -13,6 +13,8 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
+            self.knowledge = "this variety of quartz is yellow due to iron impurities."
+
             self.imageFile = 'Quartz.png'
             
         elif (ID == 2):
@@ -25,6 +27,8 @@ class Rock():
             self.tenacity = 'ductile'
             self.magnetic = 0
             self.acid = 0
+
+            self.knowledge = "this native element made Butte Montana the richest hill on Earth!"
 
             self.imageFile = 'Copper.png'
             
@@ -39,6 +43,8 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
+            self.knowledge = "this mineral is used in fiber optic cables."
+
             self.imageFile = 'Borate.png'
             
         elif (ID == 4):
@@ -51,6 +57,8 @@ class Rock():
             self.tenacity = 'brittle'
             self.magnetic = 0
             self.acid = 1
+
+            self.knowledge = "this mineral is what creates karst topographies."
 
             self.imageFile = 'Carbonate.png'
             
@@ -65,6 +73,8 @@ class Rock():
             self.magnetic = 0
             self.acid = 2
 
+            self.knowledge = "this mineral is added to soils to buffer the effects of acid rain."
+
             self.imageFile = 'Carbonate.png'
             
         elif (ID == 6):
@@ -77,6 +87,8 @@ class Rock():
             self.tenacity = 'brittle'
             self.magnetic = 0
             self.acid = 0
+
+            self.knowledge = "huh! This one tastes like salt!"
 
             self.imageFile = 'Halide.png'
             
@@ -91,6 +103,8 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
+            self.knowledge = "this mineral was named after a famous German polymath."
+
             self.imageFile = 'IronOxide.png'
             
         elif (ID == 8):
@@ -103,6 +117,8 @@ class Rock():
             self.tenacity = 'brittle'
             self.magnetic = 1
             self.acid = 0
+
+            self.knowledge = "this iron-rich mineral makes up most direct-shipping ores."
 
             self.imageFile = 'IronOxide.png'
             
@@ -117,6 +133,8 @@ class Rock():
             self.magnetic = 0
             self.acid = 0
 
+            self.knowledge = "this is a clay mineral with a Chinese name."
+
             self.imageFile = 'Phyllosilicate.png'
 
         elif (ID == 10):
@@ -129,6 +147,8 @@ class Rock():
             self.tenacity = 'sectile'
             self.magnetic = 0
             self.acid = 0
+
+            self.knowledge = "this softie is used to make baby powder."
 
             self.imageFile = 'Phyllosilicate.png'
 

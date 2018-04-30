@@ -36,6 +36,8 @@ class RockBoy():
         self.hp = 10
         self.exp = 0
         self.lvl = 1
+        self.power = 0
+        self.powerCap = 5
         
         #flags for continuous movement
         self.movingRight = False
@@ -77,6 +79,15 @@ class RockBoy():
         self.movingRight = False
         self.movingUp = False
         self.movingDown = False
+
+    def powerUp(self,i=1):
+        if self.power + i <= self.powerCap:
+            self.power += i
+        else:
+            self.power = self.powerCap
+
+    def powerDown(self,i=2):
+        self.power -= i
         
     def updatePos(self):
         """Update character's position based on movement flag"""

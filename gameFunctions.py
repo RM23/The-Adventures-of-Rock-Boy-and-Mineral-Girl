@@ -57,14 +57,23 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList):
         if char.battleStage == "MENU":
             if event.key == game.K_r:
                 #return to overworld
-                char.stage = "OVERWORLD"
-                char.battleStage = "MENU"
-                char.rect.left = char.rect.left+64
-                char.stopMovement()
+                if char.power >= 2:
+                    char.powerDown()
+                    font.updatePower(char)
+                    char.stage = "OVERWORLD"
+                    char.battleStage = "MENU"
+                    char.rect.left = char.rect.left+64
+                    char.stopMovement()
+                else:
+                    char.setBattleImage("BattleHurt.png")
+                    char.battleStage = "PLAYER_ACTION"
+                    font.menuText = font.menuFont.render("You couldn't get away!",False,(255,255,255))
             elif event.key == game.K_y:
                 #taunt
                 char.battleStage = "PLAYER_ACTION"
                 char.setBattleImage("BattleTaunt.png")
+                char.powerUp(2)
+                font.updatePower(char)
                 font.menuText = font.menuFont.render('You started dancing to taunt the enemy!',False,(255,255,255))
             elif event.key == game.K_i:
                 char.battleStage = "IDENTIFY"
@@ -100,6 +109,13 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList):
                     font.menuText = font.menuFont.render('The mineral is not attracted to the magnet.',False,(255,255,255))
                 else:
                     font.menuText = font.menuFont.render('The mineral is attracted to the magnet!',False,(255,255,255))
+            elif event.key == game.K_k:
+                char.battleStage = "PLAYER_ACTION"
+                char.setBattleImage("BattleInfo.png")
+                char.powerDown(5)
+                font.updatePower(char)
+                font.menuText = font.menuFont.render("SUPER KNOWLEDGE ACTIVATED: " + enemy.knowledge,False,(0,220,170))
+                
         elif char.battleStage == "PLAYER_ACTION":
             if event.key == game.K_RETURN:
                 char.battleStage = "ENEMY_ACTION"
@@ -113,7 +129,7 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList):
                     char.hp -= damage
                     if char.hp < 0:
                         char.hp = 0
-                    font.statTextHP = font.statFont.render('HP: ' + str(char.hp), False, (255,255,255))
+                    font.updateHP(char)
         elif char.battleStage == "ENEMY_ACTION":
             if event.key == game.K_RETURN:
                 if char.hp == 0:
@@ -129,14 +145,16 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList):
                 char.battleStage = "MENU"
                 char.stopMovement()
                 char.hp = 10
-                font.statTextHP = font.statFont.render('HP: ' + str(char.hp), False, (255,255,255))
+                font.updateHP(char)
+                #font.statTextHP = font.statFont.render('HP: ' + str(char.hp), False, (255,255,255))
                 font.menuText = font.menuFont.render('Red = RUN!; Yellow = Taunt; Green = Acid Test; Blue = Streak/Scratch', False, (255,255,255))
         elif char.battleStage == "IDENTIFY":
             name = input('Name: ')
             if name.lower() == enemy.name:
                 char.setBattleImage("BattleWin.png")
                 char.exp += 3*enemy.hardness
-                font.statTextEXP = font.statFont.render('EXP: ' + str(char.exp), False, (255,255,255))
+                font.updateEXP(char)
+                #font.statTextEXP = font.statFont.render('EXP: ' + str(char.exp), False, (255,255,255))
                 font.menuText = font.menuFont.render("That's right! It's " + enemy.name + "! You gained " + str(3*enemy.hardness) + " exp!", False, (255,255,255))
                 char.battleStage = "WIN"
             else:
@@ -148,10 +166,14 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList):
                     char.exp = char.exp - (char.lvl*10)
                     char.lvl = char.lvl+1
                     char.hp = 10 + 2*(char.lvl-1)
-                    font.statTextLVL = font.statFont.render('LVL: ' + str(char.lvl), False, (255,255,255))
-                    font.statTextHP = font.statFont.render('HP: ' + str(char.hp), False, (255,255,255))
-                    font.statTextEXP = font.statFont.render('EXP: ' + str(char.exp), False, (255,255,255))
-                    font.menuText = font.menuFont.render("LEVEL UP!", False, (255,255,255))
+                    char.powerCap += 1
+                    #font.statTextLVL = font.statFont.render('LVL: ' + str(char.lvl), False, (255,255,255))
+                    #font.statTextHP = font.statFont.render('HP: ' + str(char.hp), False, (255,255,255))
+                    #font.statTextEXP = font.statFont.render('EXP: ' + str(char.exp), False, (255,255,255))
+                    font.menuText = font.menuFont.render("LEVEL UP! MAX HP + 2! MAX PWR + 1!", False, (255,255,255))
+                    font.updateEXP(char)
+                    font.updateHP(char)
+                    font.updateLVL(char)
                     char.battleStage = "LEVEL_UP" 
                 else:
                     char.stage = "OVERWORLD"
@@ -190,6 +212,8 @@ def checkKeyUp(event,char,font,enemy,rock,mineral,mineralList):
 def playerAction(char,font,text="default"):
     char.battleStage = "PLAYER_ACTION"
     char.setBattleImage("BattleInfo.png")
+    char.powerUp()
+    font.updatePower(char)
     font.menuText = font.menuFont.render(text,False,(255,255,255))
     
 def updateScreen(settings, screen, character, paths, walls, rocks, font, enemy = 0):
@@ -224,16 +248,17 @@ def updateScreen(settings, screen, character, paths, walls, rocks, font, enemy =
         screen.fill(settings.battleBg)
         screen.blit(font.menuText, (screen.get_rect().left,screen.get_rect().top+32))
         screen.blit(font.battleText, (screen.get_rect().left,screen.get_rect().top))
-        screen.blit(font.statTextHP, (screen.get_rect().left,screen.get_rect().bottom - 160))
+        screen.blit(font.statTextHP, (screen.get_rect().left + 10,screen.get_rect().bottom - 160))
+        screen.blit(font.statTextPWR, (screen.get_rect().left + 100,screen.get_rect().bottom - 160))
         character.battleBlit()
         enemy.blit()
         
     elif character.stage == "PAUSE":
         screen.blit(font.pauseText, (screen.get_rect().left,screen.get_rect().top))
         screen.blit(font.statTextHP, (screen.get_rect().left,screen.get_rect().top + 32))
-        screen.blit(font.statTextLVL, (screen.get_rect().left,screen.get_rect().top + 56))
+        screen.blit(font.statTextPWR, (screen.get_rect().left,screen.get_rect().top + 56))
         screen.blit(font.statTextEXP, (screen.get_rect().left,screen.get_rect().top + 80))
-
+        screen.blit(font.statTextLVL, (screen.get_rect().left,screen.get_rect().top + 104))
         
         
     #actually display drawn window
