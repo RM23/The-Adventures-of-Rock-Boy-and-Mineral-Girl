@@ -5,18 +5,18 @@ import pygame as game
 from fonts import Fonts
 from random import randint
 
-def checkEvents(char,font,enemy=0,rock=0,mineral=0,mineralList=0):
+def checkEvents(char,font,enemy=0,rock=0,mineral=0,mineralList=0,boss=0):
     """Responds to keyboard and mouse events"""
     for event in game.event.get():
         if event.type == game.QUIT:
             game.quit()
             sys.exit()
         elif event.type == game.KEYDOWN:
-            checkKeyDown(event,char,font,enemy,rock,mineral,mineralList)
+            checkKeyDown(event,char,font,enemy,rock,mineral,mineralList,boss)
         elif event.type == game.KEYUP:
-            checkKeyUp(event,char,font,enemy,rock,mineral,mineralList)
+            checkKeyUp(event,char,font,enemy,rock,mineral,mineralList,boss)
                     
-def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList):
+def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList,boss):
     """Handles events that occur when player presses keys down"""
     if char.stage == "OVERWORLD":
         if event.key == game.K_RIGHT:
@@ -119,7 +119,10 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList):
         elif char.battleStage == "PLAYER_ACTION":
             if event.key == game.K_RETURN:
                 char.battleStage = "ENEMY_ACTION"
-                damage = randint(0,int(enemy.hardness))
+                if boss == True:
+                    damage = randint(3,5)
+                else:
+                    damage = randint(0,int(enemy.hardness))
                 if damage == 0:
                     char.setBattleImage("BattleWin.png")
                     font.menuText = font.menuFont.render('The mystery mineral attacked but missed! Whew!',False, (255,255,255))
@@ -152,15 +155,20 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList):
             name = input('Name: ')
             if name.lower() == enemy.name:
                 char.setBattleImage("BattleWin.png")
-                char.exp += 3*enemy.hardness
+                if boss == True:
+                    change = 50
+                else:
+                    change = 3*enemy.hardness
+                char.exp += change
                 font.updateEXP(char)
                 #font.statTextEXP = font.statFont.render('EXP: ' + str(char.exp), False, (255,255,255))
-                font.menuText = font.menuFont.render("That's right! It's " + enemy.name + "! You gained " + str(3*enemy.hardness) + " exp!", False, (255,255,255))
+                font.menuText = font.menuFont.render("That's right! It's " + enemy.name + "! You gained " + str(change) + " exp!", False, (255,255,255))
                 char.battleStage = "WIN"
             else:
                 char.battleStage = "PLAYER_ACTION"
                 font.menuText = font.menuFont.render("Uh oh, looks like that's not right!", False, (255,255,255))
         elif char.battleStage == "WIN":
+            boss = False
             if event.key == game.K_RETURN:
                 if char.exp >= char.lvl*10:
                     char.exp = char.exp - (char.lvl*10)
@@ -197,7 +205,7 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList):
             char.stage = "OVERWORLD"
             char.stopMovement()
                         
-def checkKeyUp(event,char,font,enemy,rock,mineral,mineralList):
+def checkKeyUp(event,char,font,enemy,rock,mineral,mineralList,boss):
     """Handles events that occur when player releases keys"""
     if char.stage == "OVERWORLD":
         if event.key == game.K_RIGHT:

@@ -22,6 +22,8 @@ def runGame():
 
     font = Fonts(character)
 
+    total = 2
+
     #create a path
     pathList = []
     for i in range(0,10):
@@ -37,7 +39,7 @@ def runGame():
 
     #generate some rocks
     rockList = []
-    for i in range (0,10):
+    for i in range (0,total):
         randX = randint(0,1200-32)
         randY= randint(0,800-32)
         rock = Tile('OverworldRock.png',randX,randY,screen,1)
@@ -45,9 +47,20 @@ def runGame():
 
     usedMinerals = []
     mineral = -1
+
+    bossPresent = False
+    bossCounter = 0
         
     #main loop for game
     while True:
+        if len(usedMinerals)%total == 0 and bossPresent == False and len(usedMinerals) != 0:
+            boss1 = Tile('BossRock.png',580,320,screen,1)
+            bossPresent = True
+            bossCounter += 1
+            while len(rockList) > 0:
+                rockList.pop()
+            rockList.append(boss1)
+          
         if character.stage == "OVERWORLD":
             character.checkCollision(wallList)
             if character.checkCollision(rockList) == True:
@@ -55,12 +68,15 @@ def runGame():
                     mineral = randint(1,10)
                     if mineral not in usedMinerals:
                         break
-                enemy = Rock(mineral,screen)
+                if bossPresent == True:
+                    enemy = Rock(11*bossCounter,screen)
+                else:
+                    enemy = Rock(mineral,screen)
                 character.stage = "BATTLE"
                 character.setBattleImage("Battle.png")
             character.updatePos()
         if character.stage == "BATTLE":
-            gf.checkEvents(character,font,enemy,rockList,mineral,usedMinerals)
+            gf.checkEvents(character,font,enemy,rockList,mineral,usedMinerals,bossPresent)
             gf.updateScreen(settings, screen, character, pathList, wallList, rockList, font, enemy)
         else:
             gf.checkEvents(character,font)

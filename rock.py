@@ -152,6 +152,21 @@ class Rock():
 
             self.imageFile = 'Phyllosilicate.png'
 
+        elif (ID == 11):
+            self.name = 'apatite'
+            self.hardness = 5
+            self.streak = 'white'
+            self.opacity = 'translucent'
+            self.cleavage = 'indescernible'
+            self.fracture = 'conchoidal'
+            self.tenacity = 'brittle'
+            self.magnetic = 0
+            self.acid = 0
+
+            self.knowledge = "what? This mineral is completely indistinct! It looks like 7 different things!"
+
+            self.imageFile = 'Apatite.png'
+
         self.image = game.image.load(self.imageFile)
         self.rect = self.image.get_rect()
         self.screen = screen
