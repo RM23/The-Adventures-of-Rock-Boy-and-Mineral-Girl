@@ -6,6 +6,7 @@ class Settings():
         #Screen settings
         self.screenWidth = 1200
         self.screenHeight = 800
-        self. bgColor = (0,0,255)
+        self. bgColor = (0,50,175)
+        self.battleBg = (77,77,77)
         self.title = "ROCK BOY"
         
