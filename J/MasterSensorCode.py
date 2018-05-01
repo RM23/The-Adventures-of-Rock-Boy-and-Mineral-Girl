@@ -13,10 +13,9 @@ Import smbus for I2C connection for accelerometer
 Import RPi.GPIO to control pins on the Pi Wedge
 Import spidev for reading inputs from analog sensors through ADC chip"""
 evalTime = 20
-flexLimit1 = 90
-flexLimit2 = 41
-forceLimit = 600
-photoLimit = .05
+flexLimit = 442
+forceLimit = 100
+photoLimit = .4
 
 GPIO.setwarnings(False)
 
@@ -87,16 +86,22 @@ def analogCode():
         yellowInput = GPIO.input(yellowPin)
         redInput = GPIO.input(redPin)
         if blueInput == 1:
-            return "Blue"
-            break
+            print("Turn Knob")
+            action = knobCode()
+            if action == True:
+                return "Scratch"
+                break
         elif greenInput == 1:
-            return "Green"
+            return "Acid"
             break
         elif yellowInput == 1:
-            return "Yellow"
-            break
+            print("Turn Knob")
+            action = knobCode()
+            if action == True:
+                return "Streak"
+                break
         elif redInput == 1:
-            return "Red"
+            return "Run"
             break
 
         #Test Reed switch
@@ -130,22 +135,25 @@ def flexCode():
     print("Flex")
     #start tracking flex sensor readings
     for i in range(evalTime):
+    #while True:
         reading = readAdc(0)
         print(reading)
+        
         #test if sensor is flexed
-        if reading < flexLimit1 and reading > flexLimit2:
+        if reading == flexLimit:
             return True
-            break   
+            break
 
 #Function that detecs pressure on force resist sensor
 def forceCode():
     print("Force")
     for i in range(evalTime):
+    #while True:
         #Takes in reading on Force Resistor
         reading = readAdc(0)
         print(reading)
         #Detects if applied forces exceed comparison value
-        if reading > forceLimit:
+        if reading < forceLimit:
             return True
             break
 
@@ -198,6 +206,7 @@ def read(adc_channel):
 def photocellCode():
     print("Photo")
     for i in range(evalTime):
+    #while True:
         reading = read(0)
         print(reading)
         if reading < photoLimit:
