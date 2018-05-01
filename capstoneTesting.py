@@ -26,8 +26,8 @@ def runGame():
 
     #create a path
     pathList = []
-    for i in range(0,10):
-        path = Tile('OverworldPath.png',screen.get_rect().centerx,screen.get_rect().centery + (i*32),screen,0)
+    for i in range(0,20):
+        path = Tile('OverworldPath.png',screen.get_rect().centerx,screen.get_rect().bottom - (i*32),screen,0)
         pathList.append(path)
 
     #create a wall
@@ -36,6 +36,12 @@ def runGame():
         for j in range(0,8,2):
             wall = Tile('OverworldWall.png',(screen.get_rect().centerx*1.5)+(i*32),(screen.get_rect().centery*1.5)+(j*32),screen,1)
             wallList.append(wall)
+    for i in range(0,15):
+        wall = Tile('OverworldWall.png',240,0+(32*i),screen,1)
+        wallList.append(wall)
+    for i in range(0,4):
+        wall = Tile('OverworldWall.png',272+(32*i),96+(32*i),screen,1)
+        wallList.append(wall)
 
     #generate some rocks
     rockList = []

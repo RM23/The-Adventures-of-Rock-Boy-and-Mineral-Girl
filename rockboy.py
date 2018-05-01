@@ -37,9 +37,12 @@ class RockBoy():
 
         #walking images for animation (couldn't be bothered with spritesheets, hahahahahah)
         self.walkingImages = []
+        self.walkingLeftImages = []
         for i in range(0,4):
             self.walkingImages.append(game.image.load(self.name+"Walk"+str(i+1)+".png"))
+            self.walkingLeftImages.append(game.image.load(self.name+"WalkLeft"+str(i+1)+".png"))
         self.walkingImage = self.walkingImages[self.walkFrame]
+        self.walkingLeftImage = self.walkingLeftImages[self.walkFrame]
 
         #set hit points and exp
         self.hp = 10
@@ -154,8 +157,10 @@ class RockBoy():
         self.selectRect.bottom = self.screenRect.centery
 
         for i in range(0,4):
-            self.walkingImages.append(game.image.load(self.name+"Walk"+str(i+1)+".png"))
+            self.walkingImages[i] = game.image.load(self.name+"Walk"+str(i+1)+".png")
+            self.walkingLeftImages[i] = game.image.load(self.name+"WalkLeft"+str(i+1)+".png")
         self.walkingImage = self.walkingImages[self.walkFrame]
+        self.walkingLeftImage = self.walkingLeftImages[self.walkFrame]
 
     def setBattleImage(self,fileName):
         self.battleImage = game.image.load(self.name+fileName)
@@ -174,4 +179,7 @@ class RockBoy():
 
     def walkBlit(self):
         """Blit current walking frame"""
-        self.screen.blit(self.walkingImages[self.walkFrame],self.rect)
+        if self.movingLeft == False:
+            self.screen.blit(self.walkingImages[self.walkFrame],self.rect)
+        elif self.movingLeft == True:
+            self.screen.blit(self.walkingLeftImages[self.walkFrame],self.rect)

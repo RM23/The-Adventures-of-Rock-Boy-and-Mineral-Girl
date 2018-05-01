@@ -46,7 +46,6 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList,boss):
             #select rockboy
             char.name = "Rock"
             char.setImage("RockBoy.png", "RockSelect.png")
-            char.name = "Rock"
         elif event.key == game.K_m:
             #select mineral girl
             char.name = "Mineral"
