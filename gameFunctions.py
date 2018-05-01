@@ -110,11 +110,12 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList,boss):
                 else:
                     font.menuText = font.menuFont.render('The mineral is attracted to the magnet!',False,(255,255,255))
             elif event.key == game.K_k:
-                char.battleStage = "PLAYER_ACTION"
-                char.setBattleImage("BattleInfo.png")
-                char.powerDown(5)
-                font.updatePower(char)
-                font.menuText = font.menuFont.render("SUPER KNOWLEDGE ACTIVATED: " + enemy.knowledge,False,(0,220,170))
+                if char.power >= 5:
+                    char.battleStage = "PLAYER_ACTION"
+                    char.setBattleImage("BattleInfo.png")
+                    char.powerDown(5)
+                    font.updatePower(char)
+                    font.menuText = font.menuFont.render("SUPER KNOWLEDGE ACTIVATED: " + enemy.knowledge,False,(0,220,170))
                 
         elif char.battleStage == "PLAYER_ACTION":
             if event.key == game.K_RETURN:

@@ -19,6 +19,8 @@ def runGame():
     game.display.set_caption(settings.title)
     
     character = boy(screen)
+
+    game.display.set_icon(character.image)
     
     font = Fonts(character)
 
@@ -60,7 +62,7 @@ def runGame():
     #main loop for game
     while True:
         if len(usedMinerals)%total == 0 and bossPresent == False and len(usedMinerals) != 0:
-            boss1 = Tile('BossRock.png',580,320,screen,1)
+            boss1 = Tile('BossRock.png',583,120,screen,1)
             bossPresent = True
             bossCounter += 1
             while len(rockList) > 0:
