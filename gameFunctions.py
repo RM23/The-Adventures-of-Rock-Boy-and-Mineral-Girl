@@ -46,6 +46,7 @@ def checkKeyDown(event,char,font,enemy,rock,mineral,mineralList,boss):
             #select rockboy
             char.name = "Rock"
             char.setImage("RockBoy.png", "RockSelect.png")
+            char.name = "Rock"
         elif event.key == game.K_m:
             #select mineral girl
             char.name = "Mineral"
@@ -244,7 +245,10 @@ def updateScreen(settings, screen, character, paths, walls, rocks, font, enemy =
             i.blit()
 
         #draw character
-        character.blit()
+        if character.moving():
+            character.walkBlit()
+        else:
+            character.blit()
 
     elif character.stage == "CHARACTER_SELECT":
         screen.blit(font.selectText,(screen.get_rect().centerx,screen.get_rect().centery))

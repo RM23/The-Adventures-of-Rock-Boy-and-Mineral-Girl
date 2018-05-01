@@ -19,7 +19,7 @@ def runGame():
     game.display.set_caption(settings.title)
     
     character = boy(screen)
-
+    
     font = Fonts(character)
 
     total = 2
@@ -62,6 +62,7 @@ def runGame():
             rockList.append(boss1)
           
         if character.stage == "OVERWORLD":
+            character.walkAnimate()
             character.checkCollision(wallList)
             if character.checkCollision(rockList) == True:
                 while True:

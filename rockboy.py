@@ -14,6 +14,9 @@ class RockBoy():
         self.stage = "CHARACTER_SELECT"
         self.battleStage = "MENU"
 
+        self.walkCounter = 0
+        self.walkFrame = 0
+
         #load rock image and get its rect
         self.image = game.image.load("RockBoy.png")
         self.rect = self.image.get_rect()
@@ -31,6 +34,12 @@ class RockBoy():
         self.battleRect = self.battleImage.get_rect()
         self.battleRect.left = self.screenRect.left
         self.battleRect.bottom = self.screenRect.bottom
+
+        #walking images for animation (couldn't be bothered with spritesheets, hahahahahah)
+        self.walkingImages = []
+        for i in range(0,4):
+            self.walkingImages.append(game.image.load(self.name+"Walk"+str(i+1)+".png"))
+        self.walkingImage = self.walkingImages[self.walkFrame]
 
         #set hit points and exp
         self.hp = 10
@@ -74,6 +83,23 @@ class RockBoy():
         else:
             return False
 
+    def moving(self):
+        if self.movingRight == True or self.movingLeft == True or self.movingUp == True or self.movingDown == True:
+            return True
+        else:
+            return False
+
+    def walkAnimate(self):
+        if self.moving():
+            if self.walkCounter >= 25:
+                self.walkCounter = 0
+                self.walkFrame += 1
+                if self.walkFrame > 3:
+                    self.walkFrame = 0
+                self.walkingImage = self.walkingImages[self.walkFrame]
+            else:
+                self.walkCounter += 1
+            
     def stopMovement(self):
         self.movingLeft = False
         self.movingRight = False
@@ -127,6 +153,10 @@ class RockBoy():
         self.selectRect.left = self.screenRect.centerx
         self.selectRect.bottom = self.screenRect.centery
 
+        for i in range(0,4):
+            self.walkingImages.append(game.image.load(self.name+"Walk"+str(i+1)+".png"))
+        self.walkingImage = self.walkingImages[self.walkFrame]
+
     def setBattleImage(self,fileName):
         self.battleImage = game.image.load(self.name+fileName)
         
@@ -141,3 +171,7 @@ class RockBoy():
     def battleBlit(self):
         """Blit used during battles"""
         self.screen.blit(self.battleImage,self.battleRect)
+
+    def walkBlit(self):
+        """Blit current walking frame"""
+        self.screen.blit(self.walkingImages[self.walkFrame],self.rect)
